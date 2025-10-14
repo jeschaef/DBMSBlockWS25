@@ -43,3 +43,8 @@ You can check logs of all containers with `docker compose logs` or just specific
 This can also be done nicely in Docker Desktop (GUI, but needs to be installed first).
 
 Generally, the web clients wait for the right database containers to start up. If the (cassandra) container startup takes too long (causes docker to determine the container being unhealthy although it just is not finished starting yet), you can increase the healthcheck parameters in docker-compose.yml. Still, a healthy container is not necessarily ready in the sense of all data being loaded already (in particular cassandra takes some time due to the large email import file).
+
+# Citations
+
+Mondial Database "Wolfgang May, Information Extraction and Integration with Florid: The
+Mondial Case Study, Universität Freiburg, Institut für Informatik, 1999" (details see http://dbis.informatik.uni-goettingen.de/Mondial)
