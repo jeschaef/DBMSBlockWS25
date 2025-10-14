@@ -4,7 +4,7 @@
 
 1. Install & start [Docker](https://docs.docker.com/get-started/get-docker/) (if not already on your machine)
 2. Install [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) (if not already on your machine)
-3. Clone the repository `git clone https://github.com/jeschaef/DBMSBlockWS25`
+3. Clone the repository `git clone https://github.com/jeschaef/DBMSBlockWS25.git`
 4. Change into the project directory cd DBMSBlockWS25
 
 ## Configuration
