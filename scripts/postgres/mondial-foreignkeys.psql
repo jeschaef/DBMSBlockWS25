@@ -1,0 +1,409 @@
+-- Country
+ALTER TABLE country
+ADD CONSTRAINT FKCountryCapital
+FOREIGN KEY (code, province, capital)
+REFERENCES city (country, province, name);
+
+-- City
+ALTER TABLE city
+ADD CONSTRAINT FKCityCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+ALTER TABLE city
+ADD CONSTRAINT FKCityProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+-- Province
+ALTER TABLE province
+ADD CONSTRAINT FKProvinceCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+ALTER TABLE province
+ADD CONSTRAINT FKProvinceCapital
+FOREIGN KEY (capital, country, capprov)
+REFERENCES city (name, country, province);
+
+-- Economy
+ALTER TABLE economy
+ADD CONSTRAINT FKEconomyCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+-- Population
+ALTER TABLE population
+ADD CONSTRAINT FKPopulationCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+-- Politics
+ALTER TABLE politics
+ADD CONSTRAINT FKPoliticsCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+ALTER TABLE politics
+ADD CONSTRAINT FKPoliticsDependentCountry
+FOREIGN KEY (dependent)
+REFERENCES country (code);
+
+-- Religion
+ALTER TABLE religion
+ADD CONSTRAINT FKReligionCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+-- Ethnic Group
+ALTER TABLE ethnicgroup
+ADD CONSTRAINT FKEthnicCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+-- Spoken
+ALTER TABLE spoken
+ADD CONSTRAINT FKSpokenCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+ALTER TABLE spoken
+ADD CONSTRAINT FKSpokenLanguage
+FOREIGN KEY (language)
+REFERENCES language (name);
+
+-- Language
+ALTER TABLE language
+ADD CONSTRAINT FKLanguageSuperlanguage
+FOREIGN KEY (superlanguage)
+REFERENCES language (name);
+
+-- CountryPops
+ALTER TABLE countrypops
+ADD CONSTRAINT FKCountrypopsCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+-- Country Other Name
+ALTER TABLE countryothername
+ADD CONSTRAINT FKCountryOtherNameCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+-- Country Local Name
+ALTER TABLE countrylocalname
+ADD CONSTRAINT FKCountryLocalNameCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+-- ProvPops
+ALTER TABLE provpops
+ADD CONSTRAINT FKProvpopsProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+-- Province Other Name
+ALTER TABLE provinceothername
+ADD CONSTRAINT FKProvinceOtherNameProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+-- Province Local Name
+ALTER TABLE provincelocalname
+ADD CONSTRAINT FKProvinceLocalNameProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+-- CityPops
+ALTER TABLE citypops
+ADD CONSTRAINT FKCitypopsCity
+FOREIGN KEY (city, country, province)
+REFERENCES city (name, country, province);
+
+-- City Other Name
+ALTER TABLE cityothername
+ADD CONSTRAINT FKCityOtherNameCity
+FOREIGN KEY (city, country, province)
+REFERENCES city (name, country, province);
+
+-- City Local Name
+ALTER TABLE citylocalname
+ADD CONSTRAINT FKCityLocalNameCity
+FOREIGN KEY (city, country, province)
+REFERENCES city (name, country, province);
+
+-- Continent
+-- No
+
+-- Borders
+ALTER TABLE borders
+ADD CONSTRAINT FKBordersCountry1
+FOREIGN KEY (country1)
+REFERENCES country (code);
+
+ALTER TABLE borders
+ADD CONSTRAINT FKBordersCountry2
+FOREIGN KEY (country2)
+REFERENCES country (code);
+
+-- Encompasses
+ALTER TABLE encompasses
+ADD CONSTRAINT FKEncompassesCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+ALTER TABLE encompasses
+ADD CONSTRAINT FKEncompassesContinent
+FOREIGN KEY (continent)
+REFERENCES continent (name);
+
+-- Organization
+ALTER TABLE organization
+ADD CONSTRAINT FKOrganizationCity
+FOREIGN KEY (city, country, province)
+REFERENCES city (name, country, province);
+
+-- isMember
+ALTER TABLE ismember
+ADD CONSTRAINT FKisMemberCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+ALTER TABLE ismember
+ADD CONSTRAINT FKisMemberOrg
+FOREIGN KEY (organization)
+REFERENCES organization (abbreviation);
+
+
+-- Mountain, Desert, Island, Sea
+-- No
+
+-- Lake
+ALTER TABLE lake
+ADD CONSTRAINT FKLakeRiver
+FOREIGN KEY (river)
+REFERENCES river (name);
+
+-- River
+ALTER TABLE river
+ADD CONSTRAINT FKRiverRiver
+FOREIGN KEY (river)
+REFERENCES river (name);
+
+ALTER TABLE river
+ADD CONSTRAINT FKRiverLake
+FOREIGN KEY (lake)
+REFERENCES lake (name);
+
+ALTER TABLE river
+ADD CONSTRAINT FKRiverSea
+FOREIGN KEY (sea)
+REFERENCES sea (name);
+
+-- Geo_Mountain
+ALTER TABLE geo_mountain
+ADD CONSTRAINT FKGeoMountainProv
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+ALTER TABLE geo_mountain
+ADD CONSTRAINT FKGeoMountainMountain
+FOREIGN KEY (mountain)
+REFERENCES mountain (name);
+
+-- Geo_desert
+ALTER TABLE geo_desert
+ADD CONSTRAINT FKGeoDesertProv
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+ALTER TABLE geo_desert
+ADD CONSTRAINT FKGeoDesertDesert
+FOREIGN KEY (desert)
+REFERENCES desert (name);
+
+-- Geo_island
+ALTER TABLE geo_island
+ADD CONSTRAINT FKGeoIslandProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+ALTER TABLE geo_island
+ADD CONSTRAINT FKGeoIslandIsland
+FOREIGN KEY (island)
+REFERENCES island (name);
+
+-- Geo_river
+ALTER TABLE geo_river
+ADD CONSTRAINT FKGeoRiverProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+ALTER TABLE geo_river
+ADD CONSTRAINT FKGeoRiverRiver
+FOREIGN KEY (river)
+REFERENCES river (name);
+
+-- Geo_Sea
+ALTER TABLE geo_sea
+ADD CONSTRAINT FKGeoSeaProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+ALTER TABLE geo_sea
+ADD CONSTRAINT FKGeoSeaSea
+FOREIGN KEY (sea)
+REFERENCES sea (name);
+
+-- Geo_Lake
+ALTER TABLE geo_lake
+ADD CONSTRAINT FKGeoLakeProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+ALTER TABLE geo_lake
+ADD CONSTRAINT FKGeoLakeLake
+FOREIGN KEY (lake)
+REFERENCES lake (name);
+
+-- Geo_Source
+ALTER TABLE geo_source
+ADD CONSTRAINT FKGeoSourceProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+ALTER TABLE geo_source
+ADD CONSTRAINT FKGeoSourceRiver
+FOREIGN KEY (river)
+REFERENCES river (name);
+
+-- Geo_Estuary
+ALTER TABLE geo_estuary
+ADD CONSTRAINT FKGeoEstuaryProvince
+FOREIGN KEY (province, country)
+REFERENCES province (name, country);
+
+ALTER TABLE geo_estuary
+ADD CONSTRAINT FKGeoEstuary
+FOREIGN KEY (river)
+REFERENCES river (name);
+
+-- mergesWith
+ALTER TABLE mergeswith
+ADD CONSTRAINT FKMergesWithSea1
+FOREIGN KEY (sea1)
+REFERENCES sea (name);
+
+ALTER TABLE mergeswith
+ADD CONSTRAINT FKMergesWithSea2
+FOREIGN KEY (sea2)
+REFERENCES sea (name);
+
+-- Located
+ALTER TABLE located
+ADD CONSTRAINT FKLocatedCity
+FOREIGN KEY (city, country, province)
+REFERENCES city (name, country, province);
+
+ALTER TABLE located
+ADD CONSTRAINT FKLocatedRiver
+FOREIGN KEY (river)
+REFERENCES river (name);
+
+ALTER TABLE located
+ADD CONSTRAINT FKLocatedLake
+FOREIGN KEY (lake)
+REFERENCES lake (name);
+
+ALTER TABLE located
+ADD CONSTRAINT FKLocatedSea
+FOREIGN KEY (sea)
+REFERENCES sea (name);
+
+-- Located On
+ALTER TABLE locatedon
+ADD CONSTRAINT FKLocatedOnCity
+FOREIGN KEY (city, country, province)
+REFERENCES city (name, country, province);
+
+ALTER TABLE locatedon
+ADD CONSTRAINT FKLocatedOnIsland
+FOREIGN KEY (island)
+REFERENCES island (name);
+
+-- Island In
+ALTER TABLE islandin
+ADD CONSTRAINT FKIslandInIsland
+FOREIGN KEY (island)
+REFERENCES island (name);
+
+ALTER TABLE islandin
+ADD CONSTRAINT FKIslandInRiver
+FOREIGN KEY (river)
+REFERENCES river (name);
+
+ALTER TABLE islandin
+ADD CONSTRAINT FKIslandInLake
+FOREIGN KEY (lake)
+REFERENCES lake (name);
+
+ALTER TABLE islandin
+ADD CONSTRAINT FKIslandInSea
+FOREIGN KEY (sea)
+REFERENCES sea (name);
+
+-- Mountain On Island
+ALTER TABLE mountainonisland
+ADD CONSTRAINT FKMountainOnIslandMountain
+FOREIGN KEY (mountain)
+REFERENCES mountain (name);
+
+ALTER TABLE mountainonisland
+ADD CONSTRAINT FKMountainOnIslandIsland
+FOREIGN KEY (island)
+REFERENCES island (name);
+
+-- River On Island
+ALTER TABLE riveronisland
+ADD CONSTRAINT FKRiverOnIslandRiver
+FOREIGN KEY (river)
+REFERENCES river (name);
+
+ALTER TABLE riveronisland
+ADD CONSTRAINT FKRiverOnIslandIsland
+FOREIGN KEY (island)
+REFERENCES island (name);
+
+-- Lake On Island
+ALTER TABLE lakeonisland
+ADD CONSTRAINT FKLakeOnIslandLake
+FOREIGN KEY (lake)
+REFERENCES lake (name);
+
+ALTER TABLE lakeonisland
+ADD CONSTRAINT FKLakeOnIslandIsland
+FOREIGN KEY (island)
+REFERENCES island (name);
+
+-- Airport
+ALTER TABLE airport
+ADD CONSTRAINT FKAirportCity
+FOREIGN KEY (city, country, province)
+REFERENCES city (name, country, province);
+
+ALTER TABLE airport
+ADD CONSTRAINT FKAirportIsland
+FOREIGN KEY (island)
+REFERENCES island (name);
+
+ALTER TABLE airport
+ADD CONSTRAINT FKAirportCountry
+FOREIGN KEY (country)
+REFERENCES country (code);
+
+
+--
+--ALTER TABLE
+--ADD CONSTRAINT FK
+--FOREIGN KEY ()
+--REFERENCES  ();

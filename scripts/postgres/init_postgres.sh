@@ -14,3 +14,7 @@ psql -U ${POSTGRES_USER} -p 5432 -d mondial -f /docker-entrypoint-initdb.d/mondi
 
 # Run the data insertion SQL file
 psql -U ${POSTGRES_USER} -p 5432 -d mondial -f /docker-entrypoint-initdb.d/mondial-inputs.psql
+
+# Add the foreign keys
+psql -U ${POSTGRES_USER} -p 5432 -d mondial -f /docker-entrypoint-initdb.d/mondial-foreignkeys.psql
+
