@@ -195,7 +195,7 @@ MATCH (i:Island {name: row.island})
 MERGE (c)-[:CITY_ON_ISLAND]->(i);
 
 
-// laks located in province
+// lakes located in province
 LOAD CSV WITH HEADERS FROM 'file:///csv/geo_lake.csv' AS row
 MATCH (p:Province {name: row.province})
 MATCH (l:Lake {name: row.lake})
@@ -292,29 +292,36 @@ MERGE (ms)-[ri:SOURCE]->(r)
 SET ri.coordinates = CASE WHEN row.source IS NOT NULL AND row.source <> '' THEN row.source ELSE NULL END,
     ri.elevation = CASE WHEN row.sourceelevation IS NOT NULL AND row.sourceelevation <> '' THEN toFloat(row.sourceelevation) ELSE NULL END;
 
-// estuary of river in other river
+// river flows into other river
 LOAD CSV WITH HEADERS FROM 'file:///csv/river.csv' AS row
 MATCH (r1:River {name: row.name})
 MATCH (r2:River {name: row.river})
 WHERE row.river IS NOT NULL AND row.river <> ''
-MERGE (r1)-[rel:ESTUARY_IN_RIVER]->(r2)
+MERGE (r1)-[rel:FLOWS_INTO]->(r2)
 SET rel.coordinates = CASE WHEN row.estuary IS NOT NULL AND row.estuary <> '' THEN row.estuary ELSE NULL END,
     rel.elevation = CASE WHEN row.estuaryelevation IS NOT NULL AND row.estuaryelevation <> '' THEN toFloat(row.estuaryelevation) ELSE NULL END;
 
-// estuary of river in sea
+// river flows into sea
 LOAD CSV WITH HEADERS FROM 'file:///csv/river.csv' AS row
 MATCH (ri:River {name: row.name})
 MATCH (s:Sea {name: row.sea})
 WHERE row.sea IS NOT NULL AND row.sea <> ''
-MERGE (ri)-[r:ESTUARY_IN_SEA]->(s)
+MERGE (ri)-[r:FLOWS_INTO]->(s)
 SET r.coordinates = row.estuary,
     r.elevation = toFloat(row.estuaryelevation);
 
-// estuary of river in lake
+// river flows into lake
 LOAD CSV WITH HEADERS FROM 'file:///csv/river.csv' AS row
 MATCH (ri:River {name: row.name})
 MATCH (l:Lake {name: row.lake})
 WHERE row.lake IS NOT NULL AND row.lake <> ''
-MERGE (ri)-[r:ESTUARY_IN_LAKE]->(l)
+MERGE (ri)-[r:FLOWS_INTO]->(l)
 SET r.coordinates = row.estuary,
     r.elevation = toFloat(row.estuaryelevation);
+
+// Lake flows into river (river flows out of lake)
+LOAD CSV WITH HEADERS FROM 'file:///csv/lake.csv' AS row
+MATCH (l:Lake {name: row.name})
+MATCH (r:River {name: row.river})
+WHERE row.river IS NOT NULL AND row.river <> ''
+MERGE (l)-[rel:FLOWS_INTO]->(r);
