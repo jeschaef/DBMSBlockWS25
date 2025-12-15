@@ -139,7 +139,7 @@ services:
       - ${PG_PORT2}
     volumes:
 #      - ./data/postgres2:/var/lib/postgresql/data
-      - ./nosqlconcepts/Docker-Project-NoSQLconcepts/init/tool:/docker-entrypoint-initdb.d
+      - ./scripts/tool:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready", "-h", "postgres", "-p", "${PG_PORT2}", "-U", "${PG_USER}", "-d", "${PG_DATABASE2}" ]
       interval: 20s
@@ -148,8 +148,8 @@ services:
       start_period: 60s
 
 
-  server:
-    build: ./nosqlconcepts/Docker-Project-NoSQLconcepts/server
+  backend:
+    build: ./backend
     ports:
       - 5000:5000
     depends_on:
@@ -166,8 +166,8 @@ services:
     env_file:
       - .env
 
-  client:
-    build: ./nosqlconcepts/Docker-Project-NoSQLconcepts/client
+  frontend:
+    build: ./frontend
     ports:
       - 3000:3000
     depends_on:
