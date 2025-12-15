@@ -6,7 +6,7 @@ services:
     environment:
       - POSTGRES_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PASSWORD}
-      - POSTGRES_PORT=5432
+      - POSTGRES_PORT=${PG_PORT}
       - POSTGRES_DB=${DB_NAME}
     volumes:
       - ./scripts/postgres:/docker-entrypoint-initdb.d
@@ -120,8 +120,57 @@ services:
     environment:
       - MONGOCLIENT_DEFAULT_CONNECTION_URL=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongo:27017
     ports:
-      - 3000:3000
+      - 3001:3000
     depends_on:
       mongo:
         condition: service_healthy
     restart: always
+
+
+  postgres2:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: ${PG_USER2}
+      POSTGRES_PASSWORD: ${PG_PASSWORD2}
+      POSTGRES_DB: ${PG_DATABASE2}
+      POSTGRES_PORT: ${PG_PORT2}
+    ports:
+      - ${PG_PORT2}
+    volumes:
+#      - ./data/postgres2:/var/lib/postgresql/data
+      - ./nosqlconcepts/Docker-Project-NoSQLconcepts/init/tool:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-h", "postgres", "-p", "${PG_PORT2}", "-U", "${PG_USER}", "-d", "${PG_DATABASE2}" ]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+
+  server:
+    build: ./nosqlconcepts/Docker-Project-NoSQLconcepts/server
+    ports:
+      - 5000:5000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      postgres2:
+        condition: service_healthy
+      cassandra:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  client:
+    build: ./nosqlconcepts/Docker-Project-NoSQLconcepts/client
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
+    stdin_open: true
+    tty: true
