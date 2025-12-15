@@ -1,5 +1,5 @@
 ### Build react app
-FROM node:latest AS builder
+FROM node:18 AS builder
 RUN mkdir -p /home/node/app
 WORKDIR /home/node/app
 
