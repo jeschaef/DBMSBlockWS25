@@ -171,6 +171,6 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - server
+      - backend
     stdin_open: true
     tty: true
